@@ -73,20 +73,7 @@ class ReplayBuffer(object):
               current_sel_ev_number: int,
               next_sel_ev_number: int
               ) -> None:
-        """
-        store an exprtience item into Replay Buffer
-        :param current_state: current_state
-        :param action: action
-        :param reward: reward
-        :param next_state: next_state
-        :param done: done
-        :param current_ev_number: current_ev_number
-        :param current_cs_number: current_cs_number
-        :param current_slot_number: current_slot_number
-        :param current_sel_ev_number: current_sel_ev_number
-        :param next_sel_ev_number: next_sel_ev_number
-        :return:
-        """
+
         self.current_state[self.ptr] = current_state
         self.action[self.ptr] = action
         self.reward[self.ptr] = reward
@@ -103,18 +90,14 @@ class ReplayBuffer(object):
 
 
 class PrioritizedReplayBuffer(ReplayBuffer):
-    """
-     PER : Prioritized Experience Buffer
-    """
+
     def __init__(self,
                  is_ev: bool = True,
                  size: int = 100000,
                  batch_size: int = 256,
                  alpha: float = 0.7
                  ):
-        """
-            a prioritized experience replay buffer
-        """
+
         assert alpha >= 0
         super(PrioritizedReplayBuffer,
               self).__init__(is_ev=is_ev,
@@ -141,20 +124,6 @@ class PrioritizedReplayBuffer(ReplayBuffer):
               current_sel_ev_number: int,
               next_sel_ev_number: int
               ) -> None:
-        """
-        store an exprtience item into Replay Buffer
-        :param current_state: current_state
-        :param action: action
-        :param reward: reward
-        :param next_state: next_state
-        :param done: done
-        :param current_ev_number: current_ev_number
-        :param current_cs_number: current_cs_number
-        :param current_slot_number: current_slot_number
-        :param current_sel_ev_number: current_sel_ev_number
-        :param next_sel_ev_number: next_sel_ev_number
-        :return: None
-        """
         super().store(
             current_state=current_state,
             action=action,
@@ -175,12 +144,7 @@ class PrioritizedReplayBuffer(ReplayBuffer):
     def _calculate_weight(self,
                           idx: int,
                           beta: float) -> float:
-        """
-        calculate weight
-        :param idx: index
-        :param beta: hyper-parameter
-        :return: weight
-        """
+
         p_sample = self.sum_tree[idx] / self.sum_tree.sum()
         p_min = self.min_tree.min() / self.sum_tree.sum()
         max_weight = (p_min * len(self)) ** (-beta)
@@ -189,10 +153,7 @@ class PrioritizedReplayBuffer(ReplayBuffer):
         return weight
 
     def _sample_proportional(self) -> List[int]:
-        """
-        None
-        :return: List[int]
-        """
+
         indices = []
         p_total = self.sum_tree.sum(0, len(self) - 1)
         segment = p_total / self.batch_size
@@ -206,10 +167,7 @@ class PrioritizedReplayBuffer(ReplayBuffer):
 
     def sample_batch(self,
                      beta: float = 0.5) -> Dict[str, np.ndarray]:
-        """
-        sample a batch of experience
-        :return: experience
-        """
+
         assert len(self) >= self.batch_size
         assert beta > 0
         indices = self._sample_proportional()
@@ -245,12 +203,6 @@ class PrioritizedReplayBuffer(ReplayBuffer):
     def update_priorities(self,
                           indices: List[int],
                           priorities: np.ndarray) -> None:
-        """
-        update priorities
-        :param indices: indices of experience
-        :param priorities: priorities of experience
-        :return: None
-        """
         assert len(indices) == len(priorities)
         for idx, priority in zip(indices, priorities):
             assert priority > 0

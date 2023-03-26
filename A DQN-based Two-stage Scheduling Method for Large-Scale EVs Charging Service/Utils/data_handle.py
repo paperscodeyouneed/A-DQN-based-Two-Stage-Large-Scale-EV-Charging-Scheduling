@@ -11,7 +11,7 @@ class DataHandle(object):
     def __init__(self,
                  is_cs: bool = False,
                  gamma: float = 0.7):
-        # there exists some difference between calculation in CS-time and EV-time
+
         self.env = Environment()
         self.is_cs = is_cs
         self.gamma = gamma
@@ -63,10 +63,7 @@ class DataHandle(object):
     def move_experience_from_file_to_replaybuffer(self,
                                                   replay_buffer: ReplayBuffer,
                                                   exp_num: int = 50000) -> None:
-        """
-        this function used at the end of pre-trained process to move pre-trained data from file to replay buffer
-        :return: None
-        """
+
         filename = None
         # cs
         if self.is_cs and self.all_part:
@@ -114,10 +111,7 @@ class DataHandle(object):
     def move_exp(self,
                  replay_buffer,
                  exp_num: int = 70000) -> None:
-        """
-        this function used at the end of pre-trained process to move pre-trained data from file to replay buffer
-        :return: None
-        """
+
         filename = None
         if self.is_cs and self.all_part:
             filename = "../Data/pre-trained data/pickle_pretrain_cs_data_all_2_times"
@@ -212,11 +206,7 @@ class DataHandle(object):
 
     def move_experience_to_replaybuffer_when_in_training_process(self,
                                                                  replay_buffer: ReplayBuffer) -> None:
-        """
-        move experience to replay buffer when training model rather pre-training a mdoel
-        :param replay_buffer: a Replay Buffer
-        :return:None
-        """
+
         for i in range(len(self.scheduling_index)):
 
             ev_number = self.scheduling_index[i][0]
@@ -246,11 +236,6 @@ class DataHandle(object):
             return None
 
     def reset(self) -> None:
-        """
-        reset this assistant environment
-        :return: None
-        """
-        # there exists some difference between calculation in CS-time and EV-time
         self.env = Environment()
         self.is_cs = self.is_cs
         self.gamma = self.gamma
