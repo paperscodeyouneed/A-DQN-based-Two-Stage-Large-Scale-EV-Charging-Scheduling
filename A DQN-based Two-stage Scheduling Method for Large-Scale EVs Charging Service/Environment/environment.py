@@ -747,7 +747,7 @@ class Environment(object):
                                                                  str(j),
                                                                  int(self.__SIP[i][j])), end=" ")
                 for k in range(int(self.__SIP[i][j])):
-                    print(int(self.__SI[i][j][k]), end="\t")
+                    print(self.transfer_ev_no_to_order(int(self.__SI[i][j][k])), end="\t")
                 print("")
         return None
 
@@ -758,7 +758,7 @@ class Environment(object):
                                                              str(j),
                                                              int(self.__SIP[cs_number][j])), end=" ")
             for k in range(int(self.__SIP[cs_number][j])):
-                print(int(self.__SI[cs_number][j][k]), end="\t")
+                print(self.transfer_ev_no_to_order(int(self.__SI[cs_number][j][k])), end="\t")
             print("")
         return None
 

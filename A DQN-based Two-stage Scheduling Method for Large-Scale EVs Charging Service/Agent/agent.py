@@ -1,5 +1,5 @@
 import sys
-sys.path.append("E:\EV_Charging_Scheduling")
+# sys.path.append("E:\EV_Charging_Scheduling")
 
 from Environment.environment import *
 
@@ -7,7 +7,6 @@ import torch
 
 from Environment.environment import *
 from Model.model import EvNet, CsNet
-from Utils.ou_noise import OUNoise
 from Utils.replay_buffer import ReplayBuffer, PrioritizedReplayBuffer
 from Utils.data_handle import DataHandle
 from Utils.data_squeeze import squeeze_pre_trained_data
